@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 11:11:38 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 16:48:24 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ void    column_display(int argc, int max_arg_len)
     int     i;
     int		j;
   	int		str_len;
-  	int		pos;
+  	t_args	*args;
+  	t_args	*first;
 
-    if (!g_args)
+    if (!g_select.args)
     	return ;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     term_width = w.ws_col;
@@ -41,23 +42,25 @@ void    column_display(int argc, int max_arg_len)
     	return ;
     if (argc % cols)
       ++rows;
-    pos = 0;
     i = -1;
+
+    args = g_select.args;
+    first = args;
     while (++i < rows)
     {
       j = -1;
       while (++j < cols)
       {
-      	if (g_args[pos].is_active)
+      	if (args == (*g_select.active_arg))
       		ft_putstr("\033[4;m");
-        ft_putstr(g_args[pos].value);
+        ft_putstr(args->value);
       	ft_putstr("\033[0m");
-        str_len = ft_strlen(g_args[pos].value);
+        str_len = ft_strlen(args->value);
         while (str_len++ <= max_arg_len)
         	ft_putstr(" ");
-        pos++;
-        if (pos >= argc)
-          break;
+        if (args->next == first)
+        	break;
+        args = args->next;
       }
       ft_putstr("\n");
     }

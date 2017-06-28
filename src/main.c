@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 11:29:25 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 16:43:52 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ int		count_args(void)
 	t_args	*tmp;
 	t_args	*first;
 
-	if (!g_args)
+	if (!g_select.args)
 		return (0);
 	count = 1;
-	tmp = g_args;
+	tmp = g_select.args;
 	first = tmp;
-	tmp = tmp->right;
+	tmp = tmp->next;
 	while (tmp && tmp != first)
 	{
 		count++;
-		tmp = tmp->right;
+		tmp = tmp->next;
 	}
 	return (count);
 }
@@ -39,18 +39,18 @@ int		args_max_len(void)
 	t_args	*first;
 	t_args	*tmp;
 
-	if (!g_args)
+	if (!g_select.args)
 		return (0);
-	tmp = g_args;
+	tmp = g_select.args;
 	max = ft_strlen(tmp->value);
 	first = tmp;
-	tmp = tmp->right;
+	tmp = tmp->next;
 	while (tmp && tmp != first)
 	{
 		curr_len = ft_strlen(tmp->value);
 		if (curr_len > max)
 			max = curr_len;
-		tmp = tmp->right;
+		tmp = tmp->next;
 	}
 	return (max);
 }	
@@ -97,22 +97,22 @@ void	load_entry(char *tty_name)
 
 void	reset_input_mode (void)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_saved_attr);
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.saved_attr);
 }
 
-t_key	get_key(char *c)
+t_dir	get_dir(char *c)
 {
 	if (c[0] != 27 && c[1] != 91)
-		return (DEFAULT_K);
+		return (DEFAULT_DIR);
 	if (c[2] == 65)
-		return (UP_K);
+		return (UP_DIR);
 	else if (c[2] == 66)
-		return (DOWN_K);
+		return (DOWN_DIR);
 	else if (c[2] == 67)
-		return (RIGHT_K);
+		return (RIGHT_DIR);
 	else if (c[2] == 68)
-		return (LEFT_K);
-	return (DEFAULT_K);
+		return (LEFT_DIR);
+	return (DEFAULT_DIR);
 }
 
 int		main(int ac, char **av)
@@ -122,7 +122,7 @@ int		main(int ac, char **av)
     struct termios	attr;
     char			c[6];
     int				bytes_read;
-    t_key			key;
+    t_dir			dir;
 
     if (ac == 1)
         print_usage();
@@ -132,13 +132,12 @@ int		main(int ac, char **av)
         return (0);
     }
     load_entry(term_name);
-	tcgetattr (STDIN_FILENO, &g_saved_attr);
+	tcgetattr (STDIN_FILENO, &g_select.saved_attr);
 	tcgetattr (STDIN_FILENO, &attr);
 	attr.c_lflag &= ~(ICANON|ECHO); /* Clear ICANON and ECHO. */
 	attr.c_cc[VMIN] = 1;
 	attr.c_cc[VTIME] = 0;
 	tcsetattr (STDIN_FILENO, TCSAFLUSH, &attr);
-    buf = NULL;
     init_args(av + 1);
     signal(SIGWINCH, window_resize_handler);
    	while (1)
@@ -153,17 +152,18 @@ int		main(int ac, char **av)
    		}
    		else
    		{
-   			key = get_key(c);
-   			if (key == UP_K)
-   				move_up();
-   			else if (key == RIGHT_K)
-   				move_right();
-   			else if (key == DOWN_K)
-   				move_down();
-   			else if (key == LEFT_K)
-   				move_left();
+   			dir = get_dir(c);
+   			if (dir == UP_DIR)
+   				move(UP_DIR);
+   			else if (dir == RIGHT_DIR)
+   				move(RIGHT_DIR);
+   			else if (dir == DOWN_DIR)
+   				move(DOWN_DIR);
+   			else if (dir == LEFT_DIR)
+   				move(LEFT_DIR);
    		}
 	}
+   	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
 	ft_putendl("Print selected elements here!");
 	reset_input_mode();
     return (0);
