@@ -6,7 +6,7 @@
 #    By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/13 11:43:23 by jrameau           #+#    #+#              #
-#    Updated: 2017/06/27 04:05:16 by jrameau          ###   ########.fr        #
+#    Updated: 2017/06/27 20:02:44 by jrameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ $(BUILDDIR)%.o:$(SRCDIR)%.c
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(BUILDOBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(BUILDOBJS) $(LIBFT) -ltermcap
 
 # Libft rule
 $(LIBFT):
