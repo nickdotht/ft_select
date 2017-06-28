@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 00:21:17 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 11:29:14 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <libft.h>
 # include <stdio.h>
 # include <sys/ioctl.h>
+# include <signal.h>
+# include <termios.h>
 
 typedef enum		e_type
 {
@@ -25,6 +27,15 @@ typedef enum		e_type
 	DIR_T,
 	TEXT_T
 }					t_type;
+
+typedef enum		e_key
+{
+	UP_K,
+	RIGHT_K,
+	DOWN_K,
+	LEFT_K,
+	DEFAULT_K
+}					t_key;
 
 typedef struct		s_args
 {
@@ -38,8 +49,16 @@ typedef struct		s_args
 	struct s_args	*left;
 }					t_args;
 
+t_args				*g_args;
+struct termios		g_saved_attr;
+
+
 void				print_usage(void);
-void  				column_display(t_args *args, int argc, int max_arg_len);
-void				init_args(t_args **args, char **av);
+void  				column_display(int argc, int max_arg_len);
+void				init_args(char **av);
+void				move_down();
+void				move_up();
+void				move_right();
+void				move_left();
 
 #endif

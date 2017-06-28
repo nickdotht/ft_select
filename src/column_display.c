@@ -6,19 +6,13 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 00:28:02 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 11:11:38 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
 
-/**
- * TODO: Remove the fact that the args are being printed from top to bottom
- * instead of left to right so this can become shorter. We need to do it anyway
- * because we need the properties of each argument to add colors and stuffs
- */
-
-void    column_display(t_args *args, int argc, int max_arg_len)
+void    column_display(int argc, int max_arg_len)
 {
     struct  winsize w;
     int     cols;
@@ -27,24 +21,11 @@ void    column_display(t_args *args, int argc, int max_arg_len)
     int     term_height;
     int     i;
     int		j;
-    int     pos;
-    char	**arr;
-    t_args	*first;
-    t_args	*tmp;
+  	int		str_len;
+  	int		pos;
 
-    if (!args)
+    if (!g_args)
     	return ;
-    arr = (char **)ft_memalloc(sizeof(char *) * (argc + 1));
-	i = 1;
-	tmp = args;
-	first = tmp;
-	arr[0] = tmp->value;
-	tmp = tmp->bottom;
-	while (tmp && tmp != first)
-	{
-		arr[i++] = tmp->value;
-		tmp = tmp->bottom;
-	}
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     term_width = w.ws_col;
     term_height = w.ws_row;
@@ -65,17 +46,16 @@ void    column_display(t_args *args, int argc, int max_arg_len)
     while (++i < rows)
     {
       j = -1;
-      pos = i;
       while (++j < cols)
       {
-      	int str_len;
-      	ft_putstr("\033[4;44m");
-        ft_putstr(arr[pos]);
+      	if (g_args[pos].is_active)
+      		ft_putstr("\033[4;m");
+        ft_putstr(g_args[pos].value);
       	ft_putstr("\033[0m");
-        str_len = ft_strlen(arr[pos]);
+        str_len = ft_strlen(g_args[pos].value);
         while (str_len++ <= max_arg_len)
         	ft_putstr(" ");
-        pos += rows;
+        pos++;
         if (pos >= argc)
           break;
       }

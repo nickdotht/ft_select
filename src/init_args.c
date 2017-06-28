@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 00:02:11 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 11:37:22 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,35 @@
 
 // }
 
-void	init_args(t_args **args, char **av)
+void	init_args(char **av)
 {
 	int		i;
-	t_args	**head;
+	t_args	**tmp;
 	t_args	*prev;
 	t_args	*first;
 
 	prev = NULL;
-	head = args;
+	tmp = &g_args;
 	i = -1;
 	first = NULL;
 	while (av[++i])
 	{
-		*args = (t_args *)ft_memalloc(sizeof(t_args) * 1);
-		(*args)->value = ft_strdup(av[i]);
-		(*args)->top = (prev) ? prev : NULL;
-		(*args)->right = NULL;
-		(*args)->bottom = (!av[i]) ? first : NULL;
-		(*args)->left = NULL;
-		// (*args)->type = get_arg_type(av[i]); //BONUS
-		(*args)->is_active = (i == 0) ? 1 : 0;
-		(*args)->is_selected = 0;
+		*tmp = (t_args *)ft_memalloc(sizeof(t_args));
+		(*tmp)->value = ft_strdup(av[i]);
+		(*tmp)->top = NULL;
+		(*tmp)->left = (prev) ? prev : NULL;
+		(*tmp)->is_active = (i == 0) ? 1 : 0;
+		(*tmp)->is_selected = 0;
 		if (prev)
-			prev->bottom = *args;
+			prev->right = *tmp;
 		else
-			first = *args;
-		prev = *args;
-		args = &(*args)->bottom;
+			first = *tmp;
+		if (!av[i + 1])
+		{
+			// (*tmp)->right = first;
+			first->left = *tmp;
+		}
+		prev = *tmp;
+		tmp = &(*tmp)->right;
 	}
-	args = head;
 }
