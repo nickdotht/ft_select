@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 01:53:28 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/29 02:57:51 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,24 @@ void	free_args(void)
 	args = NULL;
 }
 
-void	remove_arg(t_args **active)
+void	remove_arg()
 {
-	if (!*active)
+	t_args		*active;
+
+	if (!g_select.active_arg)
 		return ;
-	if (g_select.args == (*active))
-	{
-		g_select.args = (*active)->next;
-	}
-	if ((*active)->next)
-		g_select.args->prev = (*active)->prev;
-	if ((*active)->prev)
-		g_select.args->next = (*active)->next;
-	free(*active);
+	active = *g_select.active_arg;
+	if (g_select.args == active)
+		g_select.args = active->next;
+	else
+		g_select.active_arg = &active->next;
+	active->next->prev = active->prev;
+	active->prev->next = active->next;
+	free(active);
+	g_select.argc--;
+	if (!g_select.argc)
+		stop_signal_handler();
+	g_select.args_per_row = count_columns();
 	active = NULL;
 }
 

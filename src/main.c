@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 01:23:23 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/29 02:51:46 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	init_signal_handlers()
 
 void	delete_active_arg(void)
 {
-	remove_arg(g_select.active_arg);
+	remove_arg();
 	if (!g_select.args)
 	{
 		stop_signal_handler();
@@ -204,7 +204,7 @@ int		main(int ac, char **av)
    				toggle_selection();
    			else if (c[0] == 27)
    				stop_signal_handler();
-   			else if (c[0] == 127 || c[0] == 8)
+   			else if (c[0] == 127 || c[0] == 14)
    				delete_active_arg();
    		}
    		else

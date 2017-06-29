@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 01:32:26 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/29 02:01:20 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ void				reset_default_conf(void);
 void				free_args(void);
 void				init_signal_handlers();
 void				stop_signal_handler(void);
-void				remove_arg(t_args **active);
+void				remove_arg(void);
 
 #endif
