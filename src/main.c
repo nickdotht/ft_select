@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 16:43:52 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 19:17:33 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		count_args(void)
 	return (count);
 }
 
-int		args_max_len(void)
+int		count_max_arg_len(void)
 {
 	int		max;
 	int		curr_len;
@@ -61,7 +61,8 @@ void	window_resize_handler(int sig)
 	(void)sig;
 	buf = NULL;
 	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
-    column_display(count_args(), args_max_len());
+    column_display();
+	g_select.args_per_row = count_columns();
 }
 
 
@@ -140,10 +141,11 @@ int		main(int ac, char **av)
 	tcsetattr (STDIN_FILENO, TCSAFLUSH, &attr);
     init_args(av + 1);
     signal(SIGWINCH, window_resize_handler);
+	buf = NULL;
    	while (1)
    	{
 	   	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
-	    column_display(count_args(), args_max_len());
+	    column_display();
 	    bytes_read = read(STDIN_FILENO, c, 5);
    		if (bytes_read == 1)
    		{

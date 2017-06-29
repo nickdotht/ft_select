@@ -6,17 +6,11 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 16:38:52 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 19:13:48 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
-
-// BONUS
-// t_type	get_arg_type(char *entry_name)
-// {
-
-// }
 
 void	insert_arg(char *value)
 {
@@ -45,6 +39,11 @@ void	init_args(char **av)
 	int		i;
 
 	i = -1;
+	g_select.argc = 0;
 	while (av[++i])
+	{
 		insert_arg(av[i]);
+		g_select.argc++;
+	}
+	g_select.args_per_row = count_columns();
 }

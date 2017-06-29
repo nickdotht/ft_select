@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 16:04:46 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 19:03:37 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,17 @@ typedef struct		s_select
 	t_args			**active_arg;
 	struct termios	saved_attr;
 	int				args_per_row;
+	int				argc;
 	t_args			*args;
 }					t_select;
 
 t_select			g_select;
 
 void				print_usage(void);
-void  				column_display(int argc, int max_arg_len);
+void  				column_display();
 void				init_args(char **av);
 void				move(t_dir direction);
+int					count_columns();
+int					count_max_arg_len(void);
 
 #endif
