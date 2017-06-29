@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 19:03:37 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/29 01:32:26 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct		s_select
 	struct termios	saved_attr;
 	int				args_per_row;
 	int				argc;
+	char			*term_name;
 	t_args			*args;
 }					t_select;
 
@@ -62,5 +63,13 @@ void				init_args(char **av);
 void				move(t_dir direction);
 int					count_columns();
 int					count_max_arg_len(void);
+int					ft_printnbr(int nbr);
+void				signal_handler(int signo);
+void				init_custom_conf();
+void				reset_default_conf(void);
+void				free_args(void);
+void				init_signal_handlers();
+void				stop_signal_handler(void);
+void				remove_arg(t_args **active);
 
 #endif

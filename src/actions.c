@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 10:43:41 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 20:52:44 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 21:21:27 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	move(t_dir direction)
 	{
 		i = 0;
 		tmp = active;
-		while (++i < g_select.args_per_row && tmp->prev)
+		while (++i < g_select.args_per_row)
 			tmp = tmp->prev;
 		if (i == g_select.args_per_row)
 			g_select.active_arg = &tmp->prev;
@@ -40,7 +40,7 @@ void	move(t_dir direction)
 	{
 		i = 0;
 		tmp = active;
-		while (++i < g_select.args_per_row && tmp->next)
+		while (++i < g_select.args_per_row)
 			tmp = tmp->next;
 		if (i == g_select.args_per_row)
 			g_select.active_arg = &tmp->next;

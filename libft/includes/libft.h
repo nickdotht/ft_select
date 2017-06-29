@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/21 21:30:24 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/27 22:06:36 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/28 21:48:16 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ int					ft_countwordsall(char const *str);
 void				ft_freestrarr(char **arr);
 char				*ft_strjoincl(char *s1, char *s2, int free_both);
 char				*ft_strjoinchcl(char *s1, char c);
-int					ft_printnbr(int nbr);
 int					ft_count2darray(char **arr);
 int					ft_strarrmax(char **arr);
 

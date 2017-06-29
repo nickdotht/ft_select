@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/28 19:08:13 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/06/29 00:47:35 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,46 +16,48 @@ int		get_term_size(int w_or_h)
 {
     struct  winsize w;
 
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
     return ((w_or_h) ? w.ws_col : w.ws_row);
 }
 
 int		count_columns()
 {
-	int cols;
+  int cols;
 
-	cols = get_term_size(1) / (count_max_arg_len() + 1);
+  cols = get_term_size(1) / (count_max_arg_len() + 1);
     if (!cols)
       cols = 1;
     if ((count_max_arg_len() + 1) * g_select.argc < get_term_size(1))
       cols = g_select.argc;
-  	return cols;
+    return cols;
 }
 
-void	display_args(t_args *args, t_args *first, int rows, int cols)
+void  display_args(t_args *args, t_args *first, int rows, int cols)
 {
-	int		i;
-	int		j;
-  	int		str_len;
+  int   i;
+  int   j;
+  int   str_len;
 
-	i = -1;
+  i = -1;
     while (++i < rows)
     {
       j = -1;
       while (++j < cols)
       {
-      	if (args == (*g_select.active_arg))
-      		ft_putstr("\033[4;m");
-        ft_putstr(args->value);
-      	ft_putstr("\033[0m");
+        if (args == (*g_select.active_arg))
+          ft_putstr_fd("\033[4;m", STDIN_FILENO);
+        if (args->is_selected)
+          ft_putstr_fd("\033[45;m", STDIN_FILENO);
+        ft_putstr_fd(args->value, STDIN_FILENO);
+        ft_putstr_fd("\033[0m", STDIN_FILENO);
         str_len = ft_strlen(args->value);
         while (str_len++ <= count_max_arg_len())
-        	ft_putstr(" ");
+          ft_putstr_fd(" ", STDIN_FILENO);
         if (args->next == first)
-        	break;
+          break;
         args = args->next;
       }
-      ft_putstr("\n");
+      ft_putstr_fd("\n", STDIN_FILENO);
     }
 }
 
@@ -65,11 +67,11 @@ void    column_display()
     int     rows;
 
     if (!g_select.args || count_max_arg_len() > get_term_size(1))
-    	return ;
+      return ;
     cols = count_columns();
     rows = g_select.argc / cols;
     if (rows > get_term_size(0))
-    	return ;
+      return ;
     if (g_select.argc % cols)
       ++rows;
     display_args(g_select.args, g_select.args, rows, cols);
