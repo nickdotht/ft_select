@@ -157,8 +157,6 @@ void	print_selected_args(void)
 
 void	init_custom_conf()
 {
-    struct termios	attr;
-
 	if (!(g_select.term_name = getenv("TERM")))
     {
         ft_putendl_fd("Could not find the terminal name.", STDIN_FILENO);
@@ -167,11 +165,11 @@ void	init_custom_conf()
     }
     load_entry(g_select.term_name);
 	tcgetattr(STDIN_FILENO, &g_select.saved_attr);
-	tcgetattr(STDIN_FILENO, &attr);
-	attr.c_lflag &= ~(ICANON|ECHO);
-	attr.c_cc[VMIN] = 1;
-	attr.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &attr);
+	tcgetattr(STDIN_FILENO, &g_select.attr);
+	g_select.attr.c_lflag &= ~(ICANON|ECHO);
+	g_select.attr.c_cc[VMIN] = 1;
+	g_select.attr.c_cc[VTIME] = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.attr);
 }
 
 void	init_signal_handlers()
@@ -180,9 +178,9 @@ void	init_signal_handlers()
     // signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
     // signal(SIGSTOP, signal_handler);
+    signal(SIGCONT, signal_handler);
     signal(SIGTSTP, signal_handler);
     // signal(SIGKILL, signal_handler);
-    signal(SIGCONT, signal_handler);
 }
 
 void	delete_active_arg(void)

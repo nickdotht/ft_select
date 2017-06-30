@@ -14,29 +14,36 @@
 
 void	window_resize_handler(void)
 {
-	char	*buf;
-
-	buf = NULL;
-	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
+	tputs(tgetstr("cl", NULL), 1, ft_printnbr);
     column_display();
 	g_select.args_per_row = count_columns();
 }
 
 void	suspend_signal_handler(void)
 {
+	char cp[2];
+
+	cp[0] = g_select.attr.c_cc[VSUSP];
+	cp[1] = 0;
 	reset_default_conf();
-	exit(EXIT_SUCCESS);
+	tputs(tgetstr("cl", NULL), 1, ft_printnbr);
+	signal(SIGTSTP, SIG_DFL);
+	ioctl(STDIN_FILENO, TIOCSTI, cp);
 }
 
 void	stop_signal_handler(void)
 {
 	reset_default_conf();
+	tputs(tgetstr("cl", NULL), 1, ft_printnbr);
 	free_args();
 	exit(EXIT_SUCCESS);
 }
 
 void	signal_handler(int signo)
 {
+	char	*buf;
+
+	buf = NULL;
 	if (signo == SIGTSTP)
 		suspend_signal_handler();
     else if (signo == SIGINT)
@@ -45,6 +52,9 @@ void	signal_handler(int signo)
     {
     	init_custom_conf();
     	init_signal_handlers();
+    	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
+		tputs(tgetstr("vi", &buf), 1, ft_printnbr);
+	    column_display();
     }
     else if (signo == SIGWINCH)
     	window_resize_handler();

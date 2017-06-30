@@ -73,6 +73,7 @@ typedef struct		s_select
 {
 	t_args			**active_arg;
 	struct termios	saved_attr;
+	struct termios	attr;
 	int				args_per_row;
 	int				argc;
 	char			*term_name;
