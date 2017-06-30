@@ -20,13 +20,17 @@
 # include <sys/ioctl.h>
 # include <signal.h>
 # include <termios.h>
+#include <sys/stat.h>
 
 # define C_COLOR "\033[35m"		
 # define O_COLOR "\033[36m"		
 # define H_COLOR "\033[34m"		
 # define MAKEFILE_COLOR "\033[33m"
 # define DOT_COLOR "\033[32m"				
+# define DEFAULT_COLOR "\033[0m"
 # define A_COLOR "\033[31m"
+# define REVERSE_VIDEO "\033[7m"
+# define UNDERLINED "\033[7m"
 
 # define ENTER_KEY		10
 # define ESC_KEY		27
@@ -77,6 +81,7 @@ typedef struct		s_select
 	int				args_per_row;
 	int				argc;
 	char			*term_name;
+	int				real_mode;
 	t_args			*args;
 }					t_select;
 

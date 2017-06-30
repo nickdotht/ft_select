@@ -14,7 +14,7 @@
 
 void	print_usage(void) 
 {
-	ft_putendl_fd("Thank you for using ft_select. Here's how to use it:", STDIN_FILENO);
-	ft_putendl_fd("./ft_select argument1 argument2 argument3 etc...", STDIN_FILENO);
+	ft_putendl_fd("Thank you for using ft_select. Here's how to use it:", STDERR_FILENO);
+	ft_putendl_fd("./ft_select [-r | --real] argument1 [argument2 argument3 etc...]", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }

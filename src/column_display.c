@@ -16,7 +16,7 @@ int		get_term_size(int w_or_h)
 {
     struct  winsize w;
 
-    ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
+    ioctl(STDERR_FILENO, TIOCGWINSZ, &w);
     return ((w_or_h) ? w.ws_col : w.ws_row);
 }
 
@@ -35,18 +35,18 @@ int		count_columns()
 void  print_arg_value(t_args *arg)
 {
   if (arg->type == C_T)
-    ft_putstr_fd(C_COLOR, STDIN_FILENO);
+    ft_putstr_fd(C_COLOR, STDERR_FILENO);
   else if (arg->type == O_T)
-    ft_putstr_fd(O_COLOR, STDIN_FILENO);
+    ft_putstr_fd(O_COLOR, STDERR_FILENO);
   else if (arg->type == H_T)
-    ft_putstr_fd(H_COLOR, STDIN_FILENO);
+    ft_putstr_fd(H_COLOR, STDERR_FILENO);
   else if (arg->type == MAKEFILE_T)
-    ft_putstr_fd(MAKEFILE_COLOR, STDIN_FILENO);
+    ft_putstr_fd(MAKEFILE_COLOR, STDERR_FILENO);
   else if (arg->type == DOT_T)
-    ft_putstr_fd(DOT_COLOR, STDIN_FILENO);
+    ft_putstr_fd(DOT_COLOR, STDERR_FILENO);
   else if (arg->type == A_T)
-    ft_putstr_fd(A_COLOR, STDIN_FILENO);
-  ft_putstr_fd(arg->value, STDIN_FILENO);
+    ft_putstr_fd(A_COLOR, STDERR_FILENO);
+  ft_putstr_fd(arg->value, STDERR_FILENO);
 }
 
 void  display_args(t_args *args, t_args *first, int rows, int cols)
@@ -62,19 +62,19 @@ void  display_args(t_args *args, t_args *first, int rows, int cols)
       while (++j < cols)
       {
         if (args == (*g_select.active_arg))
-          ft_putstr_fd("\033[4;m", STDIN_FILENO);
+          ft_putstr_fd(UNDERLINED, STDERR_FILENO);
         if (args->is_selected)
-          ft_putstr_fd("\033[7m", STDIN_FILENO);
+          ft_putstr_fd(REVERSE_VIDEO, STDERR_FILENO);
         print_arg_value(args);
-        ft_putstr_fd("\033[0m", STDIN_FILENO);
+        ft_putstr_fd(DEFAULT_COLOR, STDERR_FILENO);
         str_len = ft_strlen(args->value);
         while (str_len++ <= count_max_arg_len())
-          ft_putstr_fd(" ", STDIN_FILENO);
+          ft_putstr_fd(" ", STDERR_FILENO);
         if (args->next == first)
           break;
         args = args->next;
       }
-      ft_putstr_fd("\n", STDIN_FILENO);
+      ft_putstr_fd("\n", STDERR_FILENO);
     }
 }
 
@@ -85,6 +85,7 @@ void    column_display()
 
     if (!g_select.args || count_max_arg_len() > get_term_size(1))
       return ;
+    tputs(tgetstr("cl", NULL), 1, ft_printnbr);
     cols = count_columns();
     rows = g_select.argc / cols;
     if (rows > get_term_size(0))

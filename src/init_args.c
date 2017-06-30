@@ -18,22 +18,27 @@ void	free_args(void)
 	t_args		*first;
 	t_args		*curr;
 
-	if (!g_select.argc)
-		return ;
 	args = g_select.args;
 	first = args;
-	curr = args;
-	free(args->value);
-	args = args->next;
-	free(curr);
-	while (args != first)
+	while (args)
 	{
 		curr = args;
 		free(args->value);
-		args = args->next;
 		free(curr);
+		if (args->next == first)
+			break;
+		args = args->next;
 	}
 	args = NULL;
+}
+
+void	delete_file(char *fname)
+{
+	struct stat f;
+
+	if (lstat(fname, &f) == -1)
+		return ;
+	remove(fname);
 }
 
 void	remove_arg()
@@ -44,17 +49,19 @@ void	remove_arg()
 		return ;
 	active = *g_select.active_arg;
 	if (g_select.args == active)
-		g_select.args = active->next;
+		g_select.args = (active->next == active) ? NULL : active->next;
 	else
 		g_select.active_arg = &active->next;
 	active->next->prev = active->prev;
 	active->prev->next = active->next;
-	free(active);
+	if (g_select.real_mode)
+		delete_file(active->value);
 	g_select.argc--;
+	free(active->value);
+	free(active);
 	if (!g_select.argc)
 		stop_signal_handler();
 	g_select.args_per_row = count_columns();
-	active = NULL;
 }
 
 t_type	get_arg_type(char *path)

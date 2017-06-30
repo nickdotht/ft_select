@@ -14,7 +14,7 @@
 
 int		ft_printnbr(int nbr)
 {
-	return (write(STDIN_FILENO, &nbr, 1));
+	return (write(STDERR_FILENO, &nbr, 1));
 }
 
 int		count_args(void)
@@ -70,9 +70,10 @@ void	load_entry(char *tty_name)
 	int		res;
 	char	buf[1024];
 
-	if (!isatty(STDIN_FILENO))
+	if (!isatty(STDERR_FILENO))
     {
-      ft_putendl_fd("Not a terminal.", STDIN_FILENO);
+      ft_putendl_fd("Not a terminal.", STDERR_FILENO);
+    tputs(tgetstr("te", NULL), 1, ft_printnbr);
       exit(EXIT_FAILURE);
     }
 	res = tgetent(buf, tty_name);
@@ -80,11 +81,11 @@ void	load_entry(char *tty_name)
 	{
 		if (res == -1)
 		{
-			ft_putendl_fd("Terminfo database not found. Exiting.", STDIN_FILENO);
+			ft_putendl_fd("Terminfo database not found. Exiting.", STDERR_FILENO);
 		}
 		else if (res == 0)
 		{
-			ft_putendl_fd("No such entry in the terminfo database. Exiting.", STDIN_FILENO);
+			ft_putendl_fd("No such entry in the terminfo database. Exiting.", STDERR_FILENO);
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -92,11 +93,9 @@ void	load_entry(char *tty_name)
 
 void	reset_default_conf(void)
 {
-	char	*buf;
-
-	buf = NULL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.saved_attr);
-	tputs(tgetstr("ve", &buf), 1, ft_printnbr);
+	tcsetattr(STDERR_FILENO, TCSANOW, &g_select.saved_attr);
+	tputs(tgetstr("ve", NULL), 1, ft_printnbr);
+	tputs(tgetstr("te", NULL), 1, ft_printnbr);
 }
 
 t_dir	get_dir(long c)
@@ -146,8 +145,8 @@ void	print_selected_args(void)
 	{
 		if (args->is_selected)
 		{
-			ft_putstr(args->value);
-			ft_putchar(' ');
+			ft_putstr_fd(args->value, STDOUT_FILENO);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		}
 		if (args->next == first)
 			break;
@@ -159,28 +158,30 @@ void	init_custom_conf()
 {
 	if (!(g_select.term_name = getenv("TERM")))
     {
-        ft_putendl_fd("Could not find the terminal name.", STDIN_FILENO);
+        ft_putendl_fd("Could not find the terminal name.", STDERR_FILENO);
         reset_default_conf();
         exit(EXIT_SUCCESS);
     }
     load_entry(g_select.term_name);
-	tcgetattr(STDIN_FILENO, &g_select.saved_attr);
-	tcgetattr(STDIN_FILENO, &g_select.attr);
+	tcgetattr(STDERR_FILENO, &g_select.saved_attr);
+	tcgetattr(STDERR_FILENO, &g_select.attr);
 	g_select.attr.c_lflag &= ~(ICANON|ECHO);
 	g_select.attr.c_cc[VMIN] = 1;
 	g_select.attr.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.attr);
+	tcsetattr(STDERR_FILENO, TCSANOW, &g_select.attr);
+	tputs(tgetstr("ti", NULL), 1, ft_printnbr);
+	tputs(tgetstr("vi", NULL), 1, ft_printnbr);
 }
 
 void	init_signal_handlers()
 {
 	signal(SIGWINCH, signal_handler);
-    // signal(SIGABRT, signal_handler);
+    signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
-    // signal(SIGSTOP, signal_handler);
+    signal(SIGSTOP, signal_handler);
     signal(SIGCONT, signal_handler);
     signal(SIGTSTP, signal_handler);
-    // signal(SIGKILL, signal_handler);
+    signal(SIGKILL, signal_handler);
 }
 
 void	delete_active_arg(void)
@@ -192,25 +193,30 @@ void	delete_active_arg(void)
 	}
 }
 
+void	validate_flag(char *arg)
+{
+	if ((arg[0] == 'r' && !arg[1]) || (arg[0] == '-' && ft_strequ(arg + 1, "real")))
+		g_select.real_mode = 1;
+	else
+		print_usage();
+}
+
 int		main(int ac, char **av)
 {
-    char			*buf;
     long			c;
-    int				bytes_read;
 
     if (ac == 1)
         print_usage();
+    if (av[1][0] == '-' && av[1][1])
+    	validate_flag(av[1] + 1);
     init_custom_conf();
-    init_args(av + 1);
+    init_args((av[1][0] == '-') ? av + 2 : av + 1);
     init_signal_handlers();
-	buf = NULL;
-	tputs(tgetstr("vi", &buf), 1, ft_printnbr);
    	while (1)
    	{
-	   	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
 	    column_display();
 	    c = 0;
-	    bytes_read = read(STDIN_FILENO, &c, 8);
+	    read(STDERR_FILENO, &c, 8);
 		if (c == ENTER_KEY)
 			break;
 		else if (c == SPC_KEY)
@@ -224,8 +230,7 @@ int		main(int ac, char **av)
    		else
    			move(get_dir(c));
 	}
-   	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
-	print_selected_args();
 	reset_default_conf();
+	print_selected_args();
     return (0);
 }
