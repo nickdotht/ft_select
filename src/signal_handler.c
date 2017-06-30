@@ -22,7 +22,7 @@ void	window_resize_handler(void)
 	g_select.args_per_row = count_columns();
 }
 
-void	abort_signal_handler(void)
+void	suspend_signal_handler(void)
 {
 	reset_default_conf();
 	exit(EXIT_SUCCESS);
@@ -35,11 +35,11 @@ void	stop_signal_handler(void)
 	exit(EXIT_SUCCESS);
 }
 
-void		signal_handler(int signo)
+void	signal_handler(int signo)
 {
-	if (signo == SIGABRT)
-		abort_signal_handler();
-    else if (signo == SIGINT || signo == SIGSTOP || signo == SIGKILL)
+	if (signo == SIGTSTP)
+		suspend_signal_handler();
+    else if (signo == SIGINT)
         stop_signal_handler();
     else if (signo == SIGCONT)
     {

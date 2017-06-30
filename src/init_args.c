@@ -18,6 +18,8 @@ void	free_args(void)
 	t_args		*first;
 	t_args		*curr;
 
+	if (!g_select.argc)
+		return ;
 	args = g_select.args;
 	first = args;
 	curr = args;
@@ -55,6 +57,26 @@ void	remove_arg()
 	active = NULL;
 }
 
+t_type	get_arg_type(char *path)
+{
+	char				*name;
+
+	name = ft_strrchr(path, '/') ? ft_strrchr(path, '/') + 1 : path;
+	if (ft_strendswith(name, ".c"))
+		return (C_T);
+	if (ft_strendswith(name, ".o"))
+		return (O_T);
+	if (ft_strendswith(name, ".h"))
+		return (H_T);
+	if (ft_strendswith(name, ".a"))
+		return (A_T);
+	if (ft_strequ(name, "Makefile"))
+		return (MAKEFILE_T);
+	if (name[0] == '.')
+		return DOT_T;
+	return (UNKNOWN_T);
+}
+
 void	insert_arg(char *value)
 {
 	t_args		*new;
@@ -62,7 +84,8 @@ void	insert_arg(char *value)
 
 	new = (t_args *)ft_memalloc(sizeof(t_args));
 	new->value = ft_strdup(value);
-	if (g_select.args == NULL)
+	new->type = get_arg_type(value);
+	if (!g_select.args)
 	{
 		new->prev = new;
 		new->next = new;

@@ -32,6 +32,23 @@ int		count_columns()
     return cols;
 }
 
+void  print_arg_value(t_args *arg)
+{
+  if (arg->type == C_T)
+    ft_putstr_fd(C_COLOR, STDIN_FILENO);
+  else if (arg->type == O_T)
+    ft_putstr_fd(O_COLOR, STDIN_FILENO);
+  else if (arg->type == H_T)
+    ft_putstr_fd(H_COLOR, STDIN_FILENO);
+  else if (arg->type == MAKEFILE_T)
+    ft_putstr_fd(MAKEFILE_COLOR, STDIN_FILENO);
+  else if (arg->type == DOT_T)
+    ft_putstr_fd(DOT_COLOR, STDIN_FILENO);
+  else if (arg->type == A_T)
+    ft_putstr_fd(A_COLOR, STDIN_FILENO);
+  ft_putstr_fd(arg->value, STDIN_FILENO);
+}
+
 void  display_args(t_args *args, t_args *first, int rows, int cols)
 {
   int   i;
@@ -47,8 +64,8 @@ void  display_args(t_args *args, t_args *first, int rows, int cols)
         if (args == (*g_select.active_arg))
           ft_putstr_fd("\033[4;m", STDIN_FILENO);
         if (args->is_selected)
-          ft_putstr_fd("\033[45;m", STDIN_FILENO);
-        ft_putstr_fd(args->value, STDIN_FILENO);
+          ft_putstr_fd("\033[7m", STDIN_FILENO);
+        print_arg_value(args);
         ft_putstr_fd("\033[0m", STDIN_FILENO);
         str_len = ft_strlen(args->value);
         while (str_len++ <= count_max_arg_len())

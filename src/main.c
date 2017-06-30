@@ -99,17 +99,15 @@ void	reset_default_conf(void)
 	tputs(tgetstr("ve", &buf), 1, ft_printnbr);
 }
 
-t_dir	get_dir(char *c)
+t_dir	get_dir(long c)
 {
-	if (c[0] != 27 && c[1] != 91)
-		return (DEFAULT_DIR);
-	if (c[2] == 65)
+	if (c == UP_KEY)
 		return (UP_DIR);
-	else if (c[2] == 66)
+	else if (c == DOWN_KEY)
 		return (DOWN_DIR);
-	else if (c[2] == 67)
+	else if (c == RIGHT_KEY)
 		return (RIGHT_DIR);
-	else if (c[2] == 68)
+	else if (c == LEFT_KEY)
 		return (LEFT_DIR);
 	return (DEFAULT_DIR);
 }
@@ -117,7 +115,24 @@ t_dir	get_dir(char *c)
 void	toggle_selection(void)
 {
 	(*g_select.active_arg)->is_selected = !(*g_select.active_arg)->is_selected;
-	g_select.active_arg = &(*g_select.active_arg)->next;
+	if ((*g_select.active_arg)->is_selected)
+		g_select.active_arg = &(*g_select.active_arg)->next;
+}
+
+void	toggle_all_args(long key)
+{
+	t_args		*args;
+	t_args		*first;
+
+	args = g_select.args;
+	first = args;
+	while (args)
+	{
+		args->is_selected = (key == STAR_KEY) ? 1 : 0;
+		if (args->next == first)
+			break;
+		args = args->next;
+	}
 }
 
 void	print_selected_args(void)
@@ -147,8 +162,8 @@ void	init_custom_conf()
 	if (!(g_select.term_name = getenv("TERM")))
     {
         ft_putendl_fd("Could not find the terminal name.", STDIN_FILENO);
-        free_args();
-        return ;
+        reset_default_conf();
+        exit(EXIT_SUCCESS);
     }
     load_entry(g_select.term_name);
 	tcgetattr(STDIN_FILENO, &g_select.saved_attr);
@@ -162,10 +177,11 @@ void	init_custom_conf()
 void	init_signal_handlers()
 {
 	signal(SIGWINCH, signal_handler);
-    signal(SIGABRT, signal_handler);
+    // signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
-    signal(SIGSTOP, signal_handler);
-    signal(SIGKILL, signal_handler);
+    // signal(SIGSTOP, signal_handler);
+    signal(SIGTSTP, signal_handler);
+    // signal(SIGKILL, signal_handler);
     signal(SIGCONT, signal_handler);
 }
 
@@ -181,7 +197,7 @@ void	delete_active_arg(void)
 int		main(int ac, char **av)
 {
     char			*buf;
-    char			c[6];
+    long			c;
     int				bytes_read;
 
     if (ac == 1)
@@ -195,18 +211,18 @@ int		main(int ac, char **av)
    	{
 	   	tputs(tgetstr("cl", &buf), 1, ft_printnbr);
 	    column_display();
-	    bytes_read = read(STDIN_FILENO, c, 5);
-   		if (bytes_read == 1)
-   		{
-   			if (c[0] == 10)
-   				break;
-   			else if (c[0] == 32)
-   				toggle_selection();
-   			else if (c[0] == 27)
-   				stop_signal_handler();
-   			else if (c[0] == 127 || c[0] == 14)
-   				delete_active_arg();
-   		}
+	    c = 0;
+	    bytes_read = read(STDIN_FILENO, &c, 8);
+		if (c == ENTER_KEY)
+			break;
+		else if (c == SPC_KEY)
+			toggle_selection();
+		else if (c == ESC_KEY)
+			stop_signal_handler();
+		else if (c == BSP_KEY || c == DEL_KEY)
+			delete_active_arg();
+		else if (c == STAR_KEY || c == MINUS_KEY)
+			toggle_all_args(c);
    		else
    			move(get_dir(c));
 	}

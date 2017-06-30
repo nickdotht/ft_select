@@ -16,16 +16,39 @@
 # include <stdlib.h>
 # include <termcap.h>
 # include <libft.h>
-# include <stdio.h>
+#include <stdio.h>
 # include <sys/ioctl.h>
 # include <signal.h>
 # include <termios.h>
 
+# define C_COLOR "\033[35m"		
+# define O_COLOR "\033[36m"		
+# define H_COLOR "\033[34m"		
+# define MAKEFILE_COLOR "\033[33m"
+# define DOT_COLOR "\033[32m"				
+# define A_COLOR "\033[31m"
+
+# define ENTER_KEY		10
+# define ESC_KEY		27
+# define SPC_KEY		32
+# define STAR_KEY		42
+# define MINUS_KEY		45
+# define BSP_KEY		127
+# define LEFT_KEY		4479771
+# define UP_KEY			4283163
+# define RIGHT_KEY		4414235
+# define DOWN_KEY		4348699
+# define DEL_KEY		2117294875L
+
 typedef enum		e_type
 {
-	FILE_T,
-	DIR_T,
-	TEXT_T
+	C_T,
+	O_T,
+	H_T,
+	A_T,
+	MAKEFILE_T,
+	DOT_T,
+	UNKNOWN_T
 }					t_type;
 
 typedef enum		e_dir
@@ -41,6 +64,7 @@ typedef struct		s_args
 {
 	char			*value;
 	int				is_selected;
+	t_type			type;
 	struct s_args	*prev;
 	struct s_args	*next;
 }					t_args;
