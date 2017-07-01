@@ -16,12 +16,14 @@ void	move_up(t_args *active)
 {
 	int		i;
 	t_args	*tmp;
+	int		cols;
 
 	i = 0;
 	tmp = active;
-	while (++i < g_select.args_per_row)
+	cols = count_columns();
+	while (++i < cols)
 		tmp = tmp->prev;
-	if (i == g_select.args_per_row)
+	if (i == cols)
 		g_select.active_arg = &tmp->prev;
 }
 
@@ -29,12 +31,14 @@ void	move_down(t_args *active)
 {
 	int		i;
 	t_args	*tmp;
+	int		cols;
 
 	i = 0;
 	tmp = active;
-	while (++i < g_select.args_per_row)
+	cols = count_columns();
+	while (++i < cols)
 		tmp = tmp->next;
-	if (i == g_select.args_per_row)
+	if (i == cols)
 		g_select.active_arg = &tmp->next;
 }
 

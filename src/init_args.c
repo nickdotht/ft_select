@@ -14,24 +14,22 @@
 
 void	free_args(void)
 {
-	t_args		*args;
 	t_args		*first;
 	t_args		*curr;
 
-	args = g_select.args;
-	first = args;
-	while (args)
+	first = g_select.args;
+	while (g_select.args)
 	{
-		curr = args;
+		curr = g_select.args;
 		g_select.argc--;
-		if (args->next == first)
+		if (g_select.args->next == first)
 			break;
-		free(args->value);
-		args = args->next;
+		free(g_select.args->value);
+		g_select.args = g_select.args->next;
 		free(curr);
 	}
 	g_select.args_per_row = 0;
-	args = NULL;
+	g_select.args = NULL;
 }
 
 void	delete_file(char *fname)
@@ -117,8 +115,6 @@ void	init_args(char **av)
 	i = -1;
 	g_select.argc = 0;
 	while (av[++i])
-	{
 		insert_arg(av[i]);
-	}
 	g_select.args_per_row = count_columns();
 }

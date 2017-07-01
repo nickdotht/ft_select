@@ -22,6 +22,7 @@
 # include <termios.h>
 # include <dirent.h>
 #include <sys/stat.h>
+#include <sys/param.h>
 
 # define C_COLOR "\033[35m"		
 # define O_COLOR "\033[36m"		

@@ -201,6 +201,40 @@ void	validate_flag(char *arg)
 		print_usage();
 }
 
+char	*get_parent_path(char *path)
+{
+	char	*last_slash;
+	char	*parent;
+
+	last_slash = strrchr(path, '/');
+	parent = strndup(path, last_slash - path);
+	return (parent);
+}
+
+void	folder_browsing(int key)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	char			*name;
+	char			*cwd;
+
+	cwd = getwd(NULL);
+	name = (key == O_KEY)
+		? ft_pathjoin(cwd, (*g_select.active_arg)->value)
+		: ft_strdup(get_parent_path(cwd));
+	if (!(dir = opendir(name)))
+		return ;
+	free_args();
+	while ((entry = readdir(dir)))
+	{
+		if (entry->d_name[0] == '.')
+			continue ;
+		insert_arg(entry->d_name);
+	}
+	closedir(dir);
+	chdir(name);
+}
+
 int		main(int ac, char **av)
 {
     long			c;
@@ -216,7 +250,7 @@ int		main(int ac, char **av)
    	{
 	    column_display();
 	    c = 0;
-	    read(STDERR_FILENO, &c, 8); // try to read 1 char at a time to check if it still works
+	    read(STDERR_FILENO, &c, 8);
 		if (c == ENTER_KEY)
 			break;
 		else if (c == SPC_KEY)
@@ -227,6 +261,8 @@ int		main(int ac, char **av)
 			delete_active_arg();
 		else if (c == STAR_KEY || c == MINUS_KEY)
 			toggle_all_args(c);
+		else if (c == O_KEY || c == B_KEY)
+			folder_browsing(c);
    		else
    			move(get_dir(c));
 	}
