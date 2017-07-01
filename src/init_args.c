@@ -23,12 +23,14 @@ void	free_args(void)
 	while (args)
 	{
 		curr = args;
-		free(args->value);
-		free(curr);
+		g_select.argc--;
 		if (args->next == first)
 			break;
+		free(args->value);
 		args = args->next;
+		free(curr);
 	}
+	g_select.args_per_row = 0;
 	args = NULL;
 }
 
@@ -92,6 +94,7 @@ void	insert_arg(char *value)
 	new = (t_args *)ft_memalloc(sizeof(t_args));
 	new->value = ft_strdup(value);
 	new->type = get_arg_type(value);
+	g_select.argc++;
 	if (!g_select.args)
 	{
 		new->prev = new;
@@ -116,7 +119,6 @@ void	init_args(char **av)
 	while (av[++i])
 	{
 		insert_arg(av[i]);
-		g_select.argc++;
 	}
 	g_select.args_per_row = count_columns();
 }

@@ -64,7 +64,7 @@ void  display_args(t_args *args, t_args *first, int rows, int cols)
         if (args == (*g_select.active_arg))
           ft_putstr_fd(UNDERLINED, STDERR_FILENO);
         if (args->is_selected)
-          ft_putstr_fd(REVERSE_VIDEO, STDERR_FILENO);
+          ft_putstr_fd(REVERSE_VIDEO_COLOR, STDERR_FILENO);
         print_arg_value(args);
         ft_putstr_fd(DEFAULT_COLOR, STDERR_FILENO);
         str_len = ft_strlen(args->value);

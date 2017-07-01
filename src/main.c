@@ -44,7 +44,7 @@ int		count_max_arg_len(void)
 	t_args	*first;
 	t_args	*tmp;
 
-	if (!g_select.args)
+	if (!g_select.args || !g_select.args->value)
 		return (0);
 	tmp = g_select.args;
 	max = ft_strlen(tmp->value);
@@ -216,7 +216,7 @@ int		main(int ac, char **av)
    	{
 	    column_display();
 	    c = 0;
-	    read(STDERR_FILENO, &c, 8);
+	    read(STDERR_FILENO, &c, 8); // try to read 1 char at a time to check if it still works
 		if (c == ENTER_KEY)
 			break;
 		else if (c == SPC_KEY)
@@ -232,5 +232,6 @@ int		main(int ac, char **av)
 	}
 	reset_default_conf();
 	print_selected_args();
+	free_args();
     return (0);
 }

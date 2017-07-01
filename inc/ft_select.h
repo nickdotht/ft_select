@@ -20,6 +20,7 @@
 # include <sys/ioctl.h>
 # include <signal.h>
 # include <termios.h>
+# include <dirent.h>
 #include <sys/stat.h>
 
 # define C_COLOR "\033[35m"		
@@ -29,14 +30,16 @@
 # define DOT_COLOR "\033[32m"				
 # define DEFAULT_COLOR "\033[0m"
 # define A_COLOR "\033[31m"
-# define REVERSE_VIDEO "\033[7m"
-# define UNDERLINED "\033[7m"
+# define REVERSE_VIDEO_COLOR "\033[7m"
+# define UNDERLINED "\033[4m"
 
 # define ENTER_KEY		10
 # define ESC_KEY		27
 # define SPC_KEY		32
 # define STAR_KEY		42
 # define MINUS_KEY		45
+# define O_KEY			111
+# define B_KEY			98
 # define BSP_KEY		127
 # define LEFT_KEY		4479771
 # define UP_KEY			4283163
@@ -63,6 +66,12 @@ typedef enum		e_dir
 	LEFT_DIR,
 	DEFAULT_DIR
 }					t_dir;
+
+typedef struct		s_file
+{
+	char			*name;
+	struct s_file	*next;
+}					t_file;
 
 typedef struct		s_args
 {
@@ -101,5 +110,6 @@ void				free_args(void);
 void				init_signal_handlers();
 void				stop_signal_handler(void);
 void				remove_arg(void);
+void				insert_arg(char *value);
 
 #endif
