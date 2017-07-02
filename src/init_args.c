@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 02:57:51 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 00:05:30 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_args(void)
 {
-	t_args		*first;
-	t_args		*curr;
+	t_arg		*first;
+	t_arg		*curr;
 
 	first = g_select.args;
 	while (g_select.args)
@@ -43,7 +43,7 @@ void	delete_file(char *fname)
 
 void	remove_arg()
 {
-	t_args		*active;
+	t_arg		*active;
 
 	if (!g_select.active_arg)
 		return ;
@@ -84,12 +84,20 @@ t_type	get_arg_type(char *path)
 	return (UNKNOWN_T);
 }
 
+/*
+** Appends a value as an argument into the list of arguments or creates it
+** if it doesn't exist
+**
+** @param		value		The value to insert
+** @return		N/A
+*/
+
 void	insert_arg(char *value)
 {
-	t_args		*new;
-	t_args		*last;
+	t_arg		*new;
+	t_arg		*last;
 
-	new = (t_args *)ft_memalloc(sizeof(t_args));
+	new = (t_arg *)ft_memalloc(sizeof(t_arg));
 	new->value = ft_strdup(value);
 	new->type = get_arg_type(value);
 	g_select.argc++;
@@ -107,6 +115,17 @@ void	insert_arg(char *value)
 	new->prev = last;
 	last->next = new;
 }
+
+/*
+** Initializes the list of argument values so we can display them later
+**
+** I'm using a global variable so I can be able to free the memory once
+** the program gets killed, there are no other methods of doing this. Unless we
+** don't use signals anymore, but for this project, I wasn't allowed to use anything else
+**
+** @param		av		Arguments variable
+** @return		N/A
+*/
 
 void	init_args(char **av)
 {

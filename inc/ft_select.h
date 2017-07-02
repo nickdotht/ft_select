@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 02:01:20 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/01 23:16:13 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,25 @@ typedef struct		s_file
 	struct s_file	*next;
 }					t_file;
 
-typedef struct		s_args
+typedef struct		s_arg
 {
 	char			*value;
 	int				is_selected;
 	t_type			type;
-	struct s_args	*prev;
-	struct s_args	*next;
-}					t_args;
+	struct s_arg	*prev;
+	struct s_arg	*next;
+}					t_arg;
 
 typedef struct		s_select
 {
-	t_args			**active_arg;
+	t_arg			**active_arg;
 	struct termios	saved_attr;
 	struct termios	attr;
 	int				args_per_row;
 	int				argc;
 	char			*term_name;
 	int				real_mode;
-	t_args			*args;
+	t_arg			*args;
 }					t_select;
 
 t_select			g_select;
@@ -112,5 +112,6 @@ void				init_signal_handlers();
 void				stop_signal_handler(void);
 void				remove_arg(void);
 void				insert_arg(char *value);
+void  				print_name_fd(t_arg *arg, int fd);
 
 #endif

@@ -12,10 +12,10 @@
 
 #include <ft_select.h>
 
-void	move_up(t_args *active)
+void	move_up(t_arg *active)
 {
 	int		i;
-	t_args	*tmp;
+	t_arg	*tmp;
 	int		cols;
 
 	i = 0;
@@ -27,10 +27,10 @@ void	move_up(t_args *active)
 		g_select.active_arg = &tmp->prev;
 }
 
-void	move_down(t_args *active)
+void	move_down(t_arg *active)
 {
 	int		i;
-	t_args	*tmp;
+	t_arg	*tmp;
 	int		cols;
 
 	i = 0;
@@ -44,7 +44,7 @@ void	move_down(t_args *active)
 
 void	move(t_dir direction)
 {
-	t_args		*active;
+	t_arg		*active;
 
 	active = *g_select.active_arg;
 	if (direction == RIGHT_DIR)

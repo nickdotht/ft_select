@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 22:38:53 by jrameau           #+#    #+#             */
-/*   Updated: 2017/06/29 01:02:37 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/01 22:49:31 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	suspend_signal_handler(void)
 {
 	reset_default_conf();
 	signal(SIGTSTP, SIG_DFL);
-	ioctl(STDERR_FILENO, TIOCSTI, "\032");
+	ioctl(STDIN_FILENO, TIOCSTI, "\032");
 }
 
 void	stop_signal_handler(void)
