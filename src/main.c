@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 00:05:00 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 03:19:55 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,13 @@ void	toggle_all_args(long key)
 	}
 }
 
+/*
+** Prints all selected arguments
+**
+** @param		void
+** @return		N/A
+*/
+
 void	print_selected_args(void)
 {
 	t_arg		*args;
@@ -168,10 +175,11 @@ void	print_selected_args(void)
 	{
 		if (args->is_selected)
 		{
-			print_name_fd(args, STDOUT_FILENO);
+			print_value_fd(args, STDOUT_FILENO);
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		}
 		if (args->next == first)
-			break;
+			break ;
 		args = args->next;
 	}
 }
@@ -209,7 +217,14 @@ void	init_custom_conf(void)
 	tputs(tgetstr("vi", NULL), 1, ft_printnbr);
 }
 
-void	init_signal_handlers()
+/*
+** Initializes the signal handlers
+**
+** @param		N/A
+** @return		N/A
+*/
+
+void	init_signal_handlers(void)
 {
 	signal(SIGWINCH, signal_handler);
     signal(SIGABRT, signal_handler);
@@ -265,6 +280,24 @@ void	folder_browsing(int key)
 	closedir(dir);
 	chdir(name);
 }
+
+/*
+** Displays, in a loop, the columns of values and handles key presses
+**
+** Handles the following keys
+** - Enter key: End the program
+** - Space key: Select or unselect the active argument
+** - Escape key: Stop the program
+** - Backspace/Delete keys: Delete the active argument
+** - Star key: Selects every argument
+** - Minus key: Unselect every argument
+** - O key: Opens and display the active argument if it's a valid folder
+** - B key: Opens the parent of the current folder
+** - Top/Right/Bottom/Left key: directions in the browser 
+**
+** @param		N/A
+** @return		N/A
+*/
 
 void	on_key_press(void)
 {

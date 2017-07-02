@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 00:19:50 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 01:42:04 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 
 int		get_term_size(int w_or_h)
 {
-    struct  winsize w;
+		struct  winsize w;
 
-    ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
-    return ((w_or_h) ? w.ws_col : w.ws_row);
+		ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
+		return ((w_or_h) ? w.ws_col : w.ws_row);
 }
 
 /*
@@ -37,14 +37,14 @@ int		get_term_size(int w_or_h)
 
 int		count_columns(void)
 {
-  int cols;
+	int cols;
 
-  cols = get_term_size(1) / (count_max_arg_len() + 1);
-    if (!cols)
-      cols = 1;
-    if ((count_max_arg_len() + 1) * g_select.argc < get_term_size(1))
-      cols = g_select.argc;
-    return cols;
+	cols = get_term_size(1) / (count_max_arg_len() + 1);
+		if (!cols)
+			cols = 1;
+		if ((count_max_arg_len() + 1) * g_select.argc < get_term_size(1))
+			cols = g_select.argc;
+		return cols;
 }
 
 /*
@@ -57,21 +57,22 @@ int		count_columns(void)
 ** @return    N/A
 */
 
-void  print_name_fd(t_arg *arg, int fd)
+void  print_value_fd(t_arg *arg, int fd)
 {
-  if (arg->type == C_T)
-    ft_putstr_fd(C_COLOR, fd);
-  else if (arg->type == O_T)
-    ft_putstr_fd(O_COLOR, fd);
-  else if (arg->type == H_T)
-    ft_putstr_fd(H_COLOR, fd);
-  else if (arg->type == MAKEFILE_T)
-    ft_putstr_fd(MAKEFILE_COLOR, fd);
-  else if (arg->type == DOT_T)
-    ft_putstr_fd(DOT_COLOR, fd);
-  else if (arg->type == A_T)
-    ft_putstr_fd(A_COLOR, fd);
-  ft_putstr_fd(arg->value, fd);
+	if (arg->type == C_T)
+		ft_putstr_fd(C_COLOR, fd);
+	else if (arg->type == O_T)
+		ft_putstr_fd(O_COLOR, fd);
+	else if (arg->type == H_T)
+		ft_putstr_fd(H_COLOR, fd);
+	else if (arg->type == MAKEFILE_T)
+		ft_putstr_fd(MAKEFILE_COLOR, fd);
+	else if (arg->type == DOT_T)
+		ft_putstr_fd(DOT_COLOR, fd);
+	else if (arg->type == A_T)
+		ft_putstr_fd(A_COLOR, fd);
+	ft_putstr_fd(arg->value, fd);
+	ft_putstr_fd(DEFAULT_COLOR, STDIN_FILENO);
 }
 
 /*
@@ -92,46 +93,58 @@ void  print_name_fd(t_arg *arg, int fd)
 
 void  display_args(t_arg *args, t_arg *first, int rows, int cols)
 {
-  int   i;
-  int   j;
-  int   str_len;
+	int   i;
+	int   j;
+	int   str_len;
 
-  i = -1;
-  while (++i < rows)
-  {
-    j = -1;
-    while (++j < cols)
-    {
-      if (args == (*g_select.active_arg))
-        ft_putstr_fd(UNDERLINED, STDIN_FILENO);
-      if (args->is_selected)
-        ft_putstr_fd(REVERSE_VIDEO_COLOR, STDIN_FILENO);
-      print_name_fd(args, STDIN_FILENO);
-      ft_putstr_fd(DEFAULT_COLOR, STDIN_FILENO);
-      str_len = ft_strlen(args->value);
-      while (str_len++ <= count_max_arg_len())
-        ft_putstr_fd(" ", STDIN_FILENO);
-      if (args->next == first)
-        break;
-      args = args->next;
-    }
-    ft_putstr_fd("\n", STDIN_FILENO);
-  }
+	i = -1;
+	while (++i < rows)
+	{
+		j = -1;
+		while (++j < cols)
+		{
+			if (args == (*g_select.active_arg))
+				ft_putstr_fd(UNDERLINED, STDIN_FILENO);
+			if (args->is_selected)
+				ft_putstr_fd(REVERSE_VIDEO_COLOR, STDIN_FILENO);
+			print_value_fd(args, STDIN_FILENO);
+			str_len = ft_strlen(args->value);
+			while (str_len++ <= count_max_arg_len())
+				ft_putstr_fd(" ", STDIN_FILENO);
+			if (args->next == first)
+				break;
+			args = args->next;
+		}
+		ft_putstr_fd("\n", STDIN_FILENO);
+	}
 }
+
+/*
+** Displays the columns of values
+** 
+** If it cannot fit at least 1 column on the screen, it displays
+** a blank screen
+** If it can, it first clears the whole screen, calculates rows and columns.
+** It also displays a blank screen if the height of the window is not long
+** enough. Then it displays thre list of arguments.
+** 
+** @param     N/A
+** @return    N/A
+*/
 
 void    column_display()
 {
-    int     cols;
-    int     rows;
+		int     cols;
+		int     rows;
 
-    if (!g_select.args || count_max_arg_len() > get_term_size(1))
-      return ;
-    tputs(tgetstr("cl", NULL), 1, ft_printnbr);
-    cols = count_columns();
-    rows = g_select.argc / cols;
-    if (rows > get_term_size(0))
-      return ;
-    if (g_select.argc % cols)
-      ++rows;
-    display_args(g_select.args, g_select.args, rows, cols);
+		if (!g_select.args || count_max_arg_len() > get_term_size(1))
+			return ;
+		tputs(tgetstr("cl", NULL), 1, ft_printnbr);
+		cols = count_columns();
+		rows = g_select.argc / cols;
+		if (rows > get_term_size(0))
+			return ;
+		if (g_select.argc % cols)
+			++rows;
+		display_args(g_select.args, g_select.args, rows, cols);
 }
