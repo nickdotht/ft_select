@@ -6,11 +6,18 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 00:05:30 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 15:09:39 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
+
+/*
+** Frees every allocated memory from the global variable 'g_select'
+**
+** @param		N/A
+** @return		N/A
+*/
 
 void	free_args(void)
 {
@@ -21,14 +28,17 @@ void	free_args(void)
 	while (g_select.args)
 	{
 		curr = g_select.args;
+		free(g_select.args->value);
+		g_select.args->value = NULL;
 		g_select.argc--;
 		if (g_select.args->next == first)
 			break;
-		free(g_select.args->value);
 		g_select.args = g_select.args->next;
 		free(curr);
+		curr = NULL;
 	}
-	g_select.args_per_row = 0;
+	if (curr)
+		free(curr);
 	g_select.args = NULL;
 }
 
@@ -41,7 +51,17 @@ void	delete_file(char *fname)
 	remove(fname);
 }
 
-void	remove_arg()
+/*
+** Removes the active argument from the list and deletes the real file from
+** the system too if 'real' mode is on and if the argument is a valid file
+**
+** It stops the program if there's no argument left
+**
+** @param		N/A
+** @return		N/A
+*/
+
+void	delete_active_arg(void)
 {
 	t_arg		*active;
 
@@ -61,12 +81,11 @@ void	remove_arg()
 	free(active);
 	if (!g_select.argc)
 		stop_signal_handler();
-	g_select.args_per_row = count_columns();
 }
 
 t_type	get_arg_type(char *path)
 {
-	char				*name;
+	char	*name;
 
 	name = ft_strrchr(path, '/') ? ft_strrchr(path, '/') + 1 : path;
 	if (ft_strendswith(name, ".c"))
@@ -135,5 +154,4 @@ void	init_args(char **av)
 	g_select.argc = 0;
 	while (av[++i])
 		insert_arg(av[i]);
-	g_select.args_per_row = count_columns();
 }

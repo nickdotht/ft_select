@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 03:19:55 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 15:07:33 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,15 @@ t_dir	get_dir(long c)
 	return (DEFAULT_DIR);
 }
 
+/*
+** Toggles the selection state of the active argument
+**
+** On selection, sets the next argument as active
+**
+** @param		N/A
+** @return		N/A
+*/
+
 void	toggle_selection(void)
 {
 	(*g_select.active_arg)->is_selected = !(*g_select.active_arg)->is_selected;
@@ -233,13 +242,6 @@ void	init_signal_handlers(void)
     signal(SIGCONT, signal_handler);
     signal(SIGTSTP, signal_handler);
     signal(SIGKILL, signal_handler);
-}
-
-void	delete_active_arg(void)
-{
-	remove_arg();
-	if (!g_select.args)
-		stop_signal_handler();
 }
 
 /*

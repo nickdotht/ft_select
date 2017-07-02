@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 01:14:51 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 15:07:47 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct		s_select
 	t_arg			**active_arg;
 	struct termios	saved_attr;
 	struct termios	attr;
-	int				args_per_row;
 	int				argc;
 	char			*term_name;
 	int				real_mode;
@@ -110,7 +109,7 @@ void				reset_default_conf(void);
 void				free_args(void);
 void				init_signal_handlers();
 void				stop_signal_handler(void);
-void				remove_arg(void);
+void				delete_active_arg(void);
 void				insert_arg(char *value);
 void  				print_value_fd(t_arg *arg, int fd);
 

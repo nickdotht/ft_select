@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 22:38:53 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 01:23:41 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 14:30:22 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	window_resize_handler(void)
 {
     column_display();
-	g_select.args_per_row = count_columns();
 }
 
 /*

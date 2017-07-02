@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 01:42:04 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 14:18:59 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int		count_columns(void)
 /*
 ** Prints the value of the passed in argument in the desired fd
 ** 
-** Depending on the type of the argument, we print a specific color.
+** Depending on the type of the argument, we print it in a specific color
+** and then set it back to the default color.
 **
 ** @param     arg     The argument to print the value of
 ** @param     fd      The file descriptor in which to print to
