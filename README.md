@@ -72,6 +72,12 @@ To run ft_select in real mode, use the flag `-r` or `--real`
 * Add copy and move capabilities
 * Even better error handling
 
+## NOTES
+
+* Don't mind the uneven tab widths, just set your editor's tab size 4 (hard tabs, not soft) and it should be fine
+* You might not like the fact that I'm not adding curly braces for some if statements, curly braces add extra lines, and my school has a coding standard (The Norme) that you must follow to succeed the projects, this standard imposes some rules like 25 lines function limits etc... Read more about it [here](linylinky).
+* I added a second branch called `original` which is the original code of the program before I started norming the code. It will lack some extra features that I didn't add back then. It's here to show me how I code initially and will help me see how much I improve over time.
+
 ## Acknowledgment
 
 Thanks to my peers at 42 @cgerbaud and @gguiulfo who helped me go faster on this project and gave me some great tips.
