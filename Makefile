@@ -6,7 +6,7 @@
 #    By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/13 11:43:23 by jrameau           #+#    #+#              #
-#    Updated: 2017/07/02 22:33:55 by jrameau          ###   ########.fr        #
+#    Updated: 2017/07/02 22:50:00 by jrameau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ $(BUILDDIR):
 
 # Objects rule
 $(BUILDDIR)%.o:$(SRCDIR)%.c
-	$(CC) $(DEBUG) $(CFLAGS) -I$(LIBINC) -I$(INC) -o $@ -c $<
+	$(CC) $(CFLAGS) -I$(LIBINC) -I$(INC) -o $@ -c $<
 
 # Project file rule
 $(NAME): $(BUILDOBJS)
