@@ -52,9 +52,26 @@ be sent back to the shell. This allows other programs to use the output of the p
 * Pressing the keys `O` and `B` opens a valid folder and goes back to the parent root directory respectively.
 * Handles interruption signals gracefully (ctrl + z, ctrl + c, kill, etc...)
 * Restores the screen to what it was before clearing it.
+* No memory leaks
+
+### Real mode
+
+You can launch the program in real mode. In real mode, when you press `delete`/`backspace` on a valid file or folder, it will be deleted on the system too. So again, watch out! I'm not responsible for any loss of your files.
+
+
+To run ft_select in real mode, use the flag `-r` or `--real`
+
+	./ft_select -r I love 42
+
+### TODO
+
+* Add breadcrumb
+* Press `H` to see hidden/dot files
+* Add copy and move capabilities
+* Even better error handling
 
 ## Acknowledgment
 
-Thanks to all my peers at 42 who helped me finish this project in 3 days, most notably @cgerbaud and @gguiulfo.
+Thanks to my peers at 42 @cgerbaud and @gguiulfo who helped me go faster on this project and gave me some great tips.
 
 Enjoy!

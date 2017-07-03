@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 18:27:11 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 01:48:31 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <termios.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <ftw.h>
+# include <unistd.h>
 
 /*
 ** Predefined color/attribute codes
@@ -205,5 +207,11 @@ int								count_max_arg_len(void);
 int								ft_printnbr(int nbr);
 void							reset_default_conf(void);
 void							toggle_all_args(long key);
+
+/*
+** src/utils3.c
+*/
+
+void							system_delete_arg(char *path);
 
 #endif

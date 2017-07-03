@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 18:21:02 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 01:19:42 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void			free_args(void)
 void			delete_active_arg(void)
 {
 	t_arg		*active;
-	struct stat	f;
 
 	if (!g_select.active_arg)
 		return ;
@@ -70,10 +69,7 @@ void			delete_active_arg(void)
 	active->next->prev = active->prev;
 	active->prev->next = active->next;
 	if (g_select.real_mode)
-	{
-		if (lstat(active->value, &f) != -1)
-			remove(active->value);
-	}
+		system_delete_arg(active->value);
 	g_select.argc--;
 	free(active->value);
 	active->value = NULL;
