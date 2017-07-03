@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 18:19:56 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 22:10:38 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,21 @@ int			count_columns(void)
 
 void		print_value_fd(t_arg *arg, int fd)
 {
-	if (arg->type == C_T)
+	if (arg->type == C_T && fd == STDIN_FILENO)
 		ft_putstr_fd(C_COLOR, fd);
-	else if (arg->type == O_T)
+	else if (arg->type == O_T && fd == STDIN_FILENO)
 		ft_putstr_fd(O_COLOR, fd);
-	else if (arg->type == H_T)
+	else if (arg->type == H_T && fd == STDIN_FILENO)
 		ft_putstr_fd(H_COLOR, fd);
-	else if (arg->type == MAKEFILE_T)
+	else if (arg->type == MAKEFILE_T && fd == STDIN_FILENO)
 		ft_putstr_fd(MAKEFILE_COLOR, fd);
-	else if (arg->type == DOT_T)
+	else if (arg->type == DOT_T && fd == STDIN_FILENO)
 		ft_putstr_fd(DOT_COLOR, fd);
-	else if (arg->type == A_T)
+	else if (arg->type == A_T && fd == STDIN_FILENO)
 		ft_putstr_fd(A_COLOR, fd);
 	ft_putstr_fd(arg->value, fd);
-	ft_putstr_fd(DEFAULT_COLOR, STDIN_FILENO);
+	if (fd == STDIN_FILENO)
+		ft_putstr_fd(DEFAULT_COLOR, fd);
 }
 
 /*

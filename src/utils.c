@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:41:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 18:25:15 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 22:41:56 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,9 @@ static void		folder_browsing(int key)
 	name = (key == O_KEY)
 		? ft_pathjoin(cwd, (*g_select.active_arg)->value)
 		: ft_get_parent_path(cwd);
+	free(cwd);
 	if (!(dir = opendir(name)))
-		return ;
+		return (free(name));
 	free_args();
 	while ((entry = readdir(dir)))
 	{
