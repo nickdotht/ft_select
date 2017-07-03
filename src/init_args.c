@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 15:09:39 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 18:21:02 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** @return		N/A
 */
 
-void	free_args(void)
+void			free_args(void)
 {
 	t_arg		*first;
 	t_arg		*curr;
@@ -32,38 +32,33 @@ void	free_args(void)
 		g_select.args->value = NULL;
 		g_select.argc--;
 		if (g_select.args->next == first)
-			break;
+			break ;
 		g_select.args = g_select.args->next;
 		free(curr);
 		curr = NULL;
 	}
 	if (curr)
+	{
 		free(curr);
+		curr = NULL;
+	}
 	g_select.args = NULL;
-}
-
-void	delete_file(char *fname)
-{
-	struct stat f;
-
-	if (lstat(fname, &f) == -1)
-		return ;
-	remove(fname);
 }
 
 /*
 ** Removes the active argument from the list and deletes the real file from
 ** the system too if 'real' mode is on and if the argument is a valid file
 **
-** It stops the program if there's no argument left
+** It stops the program if there's no argument left.
 **
 ** @param		N/A
 ** @return		N/A
 */
 
-void	delete_active_arg(void)
+void			delete_active_arg(void)
 {
 	t_arg		*active;
+	struct stat	f;
 
 	if (!g_select.active_arg)
 		return ;
@@ -75,19 +70,31 @@ void	delete_active_arg(void)
 	active->next->prev = active->prev;
 	active->prev->next = active->next;
 	if (g_select.real_mode)
-		delete_file(active->value);
+	{
+		if (lstat(active->value, &f) != -1)
+			remove(active->value);
+	}
 	g_select.argc--;
 	free(active->value);
+	active->value = NULL;
 	free(active);
+	active = NULL;
 	if (!g_select.argc)
 		stop_signal_handler();
 }
 
-t_type	get_arg_type(char *path)
+/*
+** Returns the type of the passed in value
+**
+** @param		value		The value to check the type of
+** @return		The appropriate type of the value
+*/
+
+static t_type	get_arg_type(char *value)
 {
 	char	*name;
 
-	name = ft_strrchr(path, '/') ? ft_strrchr(path, '/') + 1 : path;
+	name = ft_strrchr(value, '/') ? ft_strrchr(value, '/') + 1 : value;
 	if (ft_strendswith(name, ".c"))
 		return (C_T);
 	if (ft_strendswith(name, ".o"))
@@ -99,7 +106,7 @@ t_type	get_arg_type(char *path)
 	if (ft_strequ(name, "Makefile"))
 		return (MAKEFILE_T);
 	if (name[0] == '.')
-		return DOT_T;
+		return (DOT_T);
 	return (UNKNOWN_T);
 }
 
@@ -111,7 +118,7 @@ t_type	get_arg_type(char *path)
 ** @return		N/A
 */
 
-void	insert_arg(char *value)
+void			insert_arg(char *value)
 {
 	t_arg		*new;
 	t_arg		*last;
@@ -138,15 +145,11 @@ void	insert_arg(char *value)
 /*
 ** Initializes the list of argument values so we can display them later
 **
-** I'm using a global variable so I can be able to free the memory once
-** the program gets killed, there are no other methods of doing this. Unless we
-** don't use signals anymore, but for this project, I wasn't allowed to use anything else
-**
 ** @param		av		Arguments variable
 ** @return		N/A
 */
 
-void	init_args(char **av)
+void			init_args(char **av)
 {
 	int		i;
 

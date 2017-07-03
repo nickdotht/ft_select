@@ -6,16 +6,11 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 22:38:53 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 14:30:22 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/02 18:23:07 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_select.h>
-
-void	window_resize_handler(void)
-{
-    column_display();
-}
 
 /*
 ** Handles the suspend signal (ctrl + z)
@@ -28,7 +23,7 @@ void	window_resize_handler(void)
 ** @return		N/A
 */
 
-void	suspend_signal_handler(void)
+static void	suspend_signal_handler(void)
 {
 	reset_default_conf();
 	signal(SIGTSTP, SIG_DFL);
@@ -46,7 +41,7 @@ void	suspend_signal_handler(void)
 ** @return		N/A
 */
 
-void	stop_signal_handler(void)
+void		stop_signal_handler(void)
 {
 	reset_default_conf();
 	free_args();
@@ -60,22 +55,19 @@ void	stop_signal_handler(void)
 ** @return		N/A
 */
 
-void	signal_handler(int signo)
+void		signal_handler(int signo)
 {
-	char	*buf;
-
-	buf = NULL;
 	if (signo == SIGTSTP)
 		suspend_signal_handler();
-    else if (signo == SIGINT || signo == SIGABRT || signo == SIGSTOP
-    	|| signo == SIGKILL)
-        stop_signal_handler();
-    else if (signo == SIGCONT)
-    {
-    	init_custom_conf();
-    	init_signal_handlers();
-	    column_display();
-    }
-    else if (signo == SIGWINCH)
-    	window_resize_handler();
+	else if (signo == SIGINT || signo == SIGABRT || signo == SIGSTOP
+			|| signo == SIGKILL)
+		stop_signal_handler();
+	else if (signo == SIGCONT)
+	{
+		init_custom_conf();
+		init_signal_handlers();
+		column_display();
+	}
+	else if (signo == SIGWINCH)
+		column_display();
 }
