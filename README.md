@@ -55,6 +55,7 @@ be sent back to the shell. This allows other programs to use the output of the p
 * Handles interruption signals gracefully (ctrl + z, ctrl + c, kill, etc...)
 * Restores the screen to what it was before clearing it.
 * No memory leaks
+* Whole codebase is commented for easier browsing.
 
 ### Real mode
 
