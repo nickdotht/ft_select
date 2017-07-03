@@ -74,6 +74,6 @@ To run ft_select in real mode, use the flag `-r` or `--real`
 
 ## Acknowledgment
 
-Thanks to my peers at 42 @cgerbaud and @gguiulfo who helped me go faster on this project and gave me some great tips.
+Thanks to my peers at 42 Christoph Gerbaud (@cgerbaud) and Giacomo Guiulfo (@gguiulfo) who helped me go faster on this project and gave me some great tips.
 
 Enjoy!
