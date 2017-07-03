@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 23:19:20 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 01:19:42 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:31:06 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,4 +153,5 @@ void			init_args(char **av)
 	g_select.argc = 0;
 	while (av[++i])
 		insert_arg(av[i]);
+	g_select.selected_count = 0;
 }

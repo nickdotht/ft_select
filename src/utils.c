@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:41:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 22:41:56 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:30:31 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static t_dir	get_dir(long c)
 static void		toggle_selection(void)
 {
 	(*g_select.active_arg)->is_selected = !(*g_select.active_arg)->is_selected;
+	g_select.selected_count += ((*g_select.active_arg)->is_selected) ? 1 : -1;
 	if ((*g_select.active_arg)->is_selected)
 		g_select.active_arg = &(*g_select.active_arg)->next;
 }

@@ -53,3 +53,4 @@ dkms.conf
 
 ft_select
 test
+.nfs.*

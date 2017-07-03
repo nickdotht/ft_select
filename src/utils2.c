@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:48:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 01:31:31 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:34:53 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	toggle_all_args(long key)
 	while (args)
 	{
 		args->is_selected = (key == STAR_KEY) ? 1 : 0;
+		g_select.selected_count += (key == STAR_KEY) ? 1 : -1;
 		if (args->next == first)
 			break ;
 		args = args->next;

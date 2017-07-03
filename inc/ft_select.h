@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 01:48:31 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:33:23 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,15 @@ typedef struct					s_arg
 /*
 ** A struct that holds any information we might need about the arguments list
 **
-** active_arg	- The currently active argument
-** old_attr		- The old attributes before we apply our own
-** attr			- Our custom attributes
-** argc			- The arguments count
-** term_name	- The terminal name from the environment
-** real_mode	- A boolean to know if the program should really delete files
-**				from the system or not
-** args			- The arguments list
+** active_arg		- The currently active argument
+** old_attr			- The old attributes before we apply our own
+** attr				- Our custom attributes
+** argc				- The arguments count
+** term_name		- The terminal name from the environment
+** real_mode		- A boolean to know if the program should really delete
+**					files from the system or not
+** args				- The arguments list
+** selected_count 	- The amount of selected arguments for use when printing
 */
 
 typedef struct					s_select
@@ -136,6 +137,7 @@ typedef struct					s_select
 	char						*term_name;
 	int							real_mode;
 	t_arg						*args;
+	int							selected_count;
 }								t_select;
 
 /*
