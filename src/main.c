@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:35:49 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:49:31 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 **
 ** Makes sure the file descriptor is a valid terminal type device,
 ** then loads the entry from the terminfo database for name, if it exists.
-** I'm using STDIN_FILENO instead of STDOUT_FILENO to take care of command
+** I'm using STDERR_FILENO instead of STDOUT_FILENO to take care of command
 ** substitutions so that we don't use the same file descriptor as the calling
-** command. Using STDERR_FILENO would have worked too.
+** command. Using STDERR_FILENO would have been a problem too for some commands
 ** i.e.: rm `./ft_ls test1 test2`
 **
 ** @param		tty_name 	entry name received from the environment variable
@@ -31,9 +31,9 @@ static void	load_entry(char *tty_name)
 	int		res;
 	char	buf[1024];
 
-	if (!isatty(STDIN_FILENO))
+	if (!isatty(STDERR_FILENO))
 	{
-		ft_putendl_fd("Not a terminal.", STDIN_FILENO);
+		ft_putendl_fd("Not a terminal.", STDERR_FILENO);
 		tputs(tgetstr("te", NULL), 1, ft_printnbr);
 		exit(EXIT_FAILURE);
 	}
@@ -41,10 +41,10 @@ static void	load_entry(char *tty_name)
 	{
 		if (res == -1)
 			ft_putendl_fd("Terminfo database not found. Exiting.",
-				STDIN_FILENO);
+				STDERR_FILENO);
 		else if (res == 0)
 			ft_putendl_fd("No such entry in the terminfo database. Exiting.",
-				STDIN_FILENO);
+				STDERR_FILENO);
 		tputs(tgetstr("te", NULL), 1, ft_printnbr);
 		exit(EXIT_FAILURE);
 	}
@@ -99,17 +99,17 @@ void		init_custom_conf(void)
 {
 	if (!(g_select.term_name = getenv("TERM")))
 	{
-		ft_putendl_fd("Could not find the terminal name.", STDIN_FILENO);
+		ft_putendl_fd("Could not find the terminal name.", STDERR_FILENO);
 		reset_default_conf();
 		exit(EXIT_SUCCESS);
 	}
 	load_entry(g_select.term_name);
-	tcgetattr(STDIN_FILENO, &g_select.old_attr);
-	tcgetattr(STDIN_FILENO, &g_select.attr);
+	tcgetattr(STDERR_FILENO, &g_select.old_attr);
+	tcgetattr(STDERR_FILENO, &g_select.attr);
 	g_select.attr.c_lflag &= ~(ICANON | ECHO);
 	g_select.attr.c_cc[VMIN] = 1;
 	g_select.attr.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.attr);
+	tcsetattr(STDERR_FILENO, TCSANOW, &g_select.attr);
 	tputs(tgetstr("ti", NULL), 1, ft_printnbr);
 	tputs(tgetstr("vi", NULL), 1, ft_printnbr);
 }

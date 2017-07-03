@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:41:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:30:31 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:47:21 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void			on_key_press(void)
 	{
 		column_display();
 		c = 0;
-		read(STDIN_FILENO, &c, 8);
+		read(STDERR_FILENO, &c, 8);
 		if (c == ENTER_KEY)
 			break ;
 		else if (c == SPC_KEY)

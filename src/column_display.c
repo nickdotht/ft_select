@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 21:39:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 22:10:38 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:47:25 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	get_term_size(int w_or_h)
 {
 	struct winsize	w;
 
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
+	ioctl(STDERR_FILENO, TIOCGWINSZ, &w);
 	return ((w_or_h) ? w.ws_col : w.ws_row);
 }
 
@@ -60,20 +60,20 @@ int			count_columns(void)
 
 void		print_value_fd(t_arg *arg, int fd)
 {
-	if (arg->type == C_T && fd == STDIN_FILENO)
+	if (arg->type == C_T && fd == STDERR_FILENO)
 		ft_putstr_fd(C_COLOR, fd);
-	else if (arg->type == O_T && fd == STDIN_FILENO)
+	else if (arg->type == O_T && fd == STDERR_FILENO)
 		ft_putstr_fd(O_COLOR, fd);
-	else if (arg->type == H_T && fd == STDIN_FILENO)
+	else if (arg->type == H_T && fd == STDERR_FILENO)
 		ft_putstr_fd(H_COLOR, fd);
-	else if (arg->type == MAKEFILE_T && fd == STDIN_FILENO)
+	else if (arg->type == MAKEFILE_T && fd == STDERR_FILENO)
 		ft_putstr_fd(MAKEFILE_COLOR, fd);
-	else if (arg->type == DOT_T && fd == STDIN_FILENO)
+	else if (arg->type == DOT_T && fd == STDERR_FILENO)
 		ft_putstr_fd(DOT_COLOR, fd);
-	else if (arg->type == A_T && fd == STDIN_FILENO)
+	else if (arg->type == A_T && fd == STDERR_FILENO)
 		ft_putstr_fd(A_COLOR, fd);
 	ft_putstr_fd(arg->value, fd);
-	if (fd == STDIN_FILENO)
+	if (fd == STDERR_FILENO)
 		ft_putstr_fd(DEFAULT_COLOR, fd);
 }
 
@@ -106,18 +106,18 @@ static void	display_args(t_arg *args, t_arg *first, int rows, int cols)
 		while (++j < cols)
 		{
 			if (args == (*g_select.active_arg))
-				ft_putstr_fd(UNDERLINED, STDIN_FILENO);
+				ft_putstr_fd(UNDERLINED, STDERR_FILENO);
 			if (args->is_selected)
-				ft_putstr_fd(REVERSE_VIDEO_COLOR, STDIN_FILENO);
-			print_value_fd(args, STDIN_FILENO);
+				ft_putstr_fd(REVERSE_VIDEO_COLOR, STDERR_FILENO);
+			print_value_fd(args, STDERR_FILENO);
 			str_len = ft_strlen(args->value);
 			while (str_len++ <= count_max_arg_len())
-				ft_putstr_fd(" ", STDIN_FILENO);
+				ft_putstr_fd(" ", STDERR_FILENO);
 			if (args->next == first)
 				break ;
 			args = args->next;
 		}
-		ft_putstr_fd("\n", STDIN_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
 	}
 }
 

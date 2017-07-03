@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 22:38:53 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/02 18:23:07 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:47:23 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	suspend_signal_handler(void)
 {
 	reset_default_conf();
 	signal(SIGTSTP, SIG_DFL);
-	ioctl(STDIN_FILENO, TIOCSTI, "\x1A");
+	ioctl(STDERR_FILENO, TIOCSTI, "\x1A");
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:48:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:34:53 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/03 02:47:18 by jrameau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 void	reset_default_conf(void)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, &g_select.old_attr);
+	tcsetattr(STDERR_FILENO, TCSANOW, &g_select.old_attr);
 	tputs(tgetstr("ve", NULL), 1, ft_printnbr);
 	tputs(tgetstr("te", NULL), 1, ft_printnbr);
 }
@@ -66,7 +66,7 @@ void	toggle_all_args(long key)
 
 int		ft_printnbr(int nbr)
 {
-	return (write(STDIN_FILENO, &nbr, 1));
+	return (write(STDERR_FILENO, &nbr, 1));
 }
 
 /*
