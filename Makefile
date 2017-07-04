@@ -6,7 +6,7 @@
 #    By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/13 11:43:23 by jrameau           #+#    #+#              #
-#    Updated: 2017/07/02 22:50:00 by jrameau          ###   ########.fr        #
+#    Updated: 2017/07/04 07:12:16 by nick             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ LIBINC = ./libft/includes/
 
 # Optimization and Compiler flags and commands
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -D_XOPEN_SOURCE=500
 
 # Debugging flags
 DEBUG = -ggdb3

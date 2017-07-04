@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:50:04 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:33:23 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/04 07:19:09 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/stat.h>
 # include <ftw.h>
 # include <unistd.h>
+# include <sys/param.h>
 
 /*
 ** Predefined color/attribute codes

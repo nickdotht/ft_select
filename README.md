@@ -22,6 +22,12 @@ To be able to build and run this program, you'll need:
 
 Those are the versions used during development.
 
+If you're on Linux, make sure you install
+
+* The termcap library:
+
+		sudo apt-get install libncurses5-dev
+
 ### Building
 
 1. Download/Clone this repo

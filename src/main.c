@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:49:31 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/04 07:23:21 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	print_selected_args(void)
 
 	args = g_select.args;
 	first = args;
-	count = 0;
+	count = 1;
 	while (args)
 	{
 		if (args->is_selected)

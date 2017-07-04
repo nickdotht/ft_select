@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/02 17:41:08 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:47:21 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/04 07:17:06 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void		folder_browsing(int key)
 	char			*name;
 	char			*cwd;
 
-	cwd = getwd(NULL);
+	cwd = getcwd(NULL, MAXPATHLEN);
 	name = (key == O_KEY)
 		? ft_pathjoin(cwd, (*g_select.active_arg)->value)
 		: ft_get_parent_path(cwd);
