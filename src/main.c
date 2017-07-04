@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/27 20:47:46 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/04 07:23:21 by nick             ###   ########.fr       */
+/*   Updated: 2017/07/04 08:02:38 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	load_entry(char *tty_name)
 	if (!isatty(STDERR_FILENO))
 	{
 		ft_putendl_fd("Not a terminal.", STDERR_FILENO);
-		tputs(tgetstr("te", NULL), 1, ft_printnbr);
 		exit(EXIT_FAILURE);
 	}
 	if ((res = tgetent(buf, tty_name)) < 1)
@@ -45,7 +44,6 @@ static void	load_entry(char *tty_name)
 		else if (res == 0)
 			ft_putendl_fd("No such entry in the terminfo database. Exiting.",
 				STDERR_FILENO);
-		tputs(tgetstr("te", NULL), 1, ft_printnbr);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -100,7 +98,6 @@ void		init_custom_conf(void)
 	if (!(g_select.term_name = getenv("TERM")))
 	{
 		ft_putendl_fd("Could not find the terminal name.", STDERR_FILENO);
-		reset_default_conf();
 		exit(EXIT_SUCCESS);
 	}
 	load_entry(g_select.term_name);
@@ -130,6 +127,7 @@ void		init_signal_handlers(void)
 	signal(SIGCONT, signal_handler);
 	signal(SIGTSTP, signal_handler);
 	signal(SIGKILL, signal_handler);
+	signal(SIGQUIT, signal_handler);
 }
 
 /*

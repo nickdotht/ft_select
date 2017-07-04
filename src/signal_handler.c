@@ -6,7 +6,7 @@
 /*   By: jrameau <jrameau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/28 22:38:53 by jrameau           #+#    #+#             */
-/*   Updated: 2017/07/03 02:47:23 by jrameau          ###   ########.fr       */
+/*   Updated: 2017/07/04 08:02:57 by nick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		signal_handler(int signo)
 	if (signo == SIGTSTP)
 		suspend_signal_handler();
 	else if (signo == SIGINT || signo == SIGABRT || signo == SIGSTOP
-			|| signo == SIGKILL)
+			|| signo == SIGKILL || signo == SIGQUIT)
 		stop_signal_handler();
 	else if (signo == SIGCONT)
 	{
