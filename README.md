@@ -49,7 +49,7 @@ each selection, the cursor will automatically position itself on the next elemen
 be sent back to the shell. This allows other programs to use the output of the program as their input. i.e: rm `./ft_select file1 file2 file3`
 * Re-organizes the display on window resize or displays a blank screen if the list cannot fit the in window.
 * Exits on `ESC` key
-* Pressing the `delete` or `backspace` keys removes an element from the list. In Real mode (Read below), it will automatically delete the active element from the system if it's a valid file (no folders). So watch out!
+* Pressing the `delete` or `backspace` keys removes an element from the list. In Real mode (Read below), it will automatically delete the active element from the system if it's a valid file/folder. So watch out!
 * Colored output based on some supported file extensions.
 * Pressing the keys `O` and `B` opens a valid folder and goes back to the parent root directory respectively.
 * Handles interruption signals gracefully (ctrl + z, ctrl + c, kill, etc...)
