@@ -96,6 +96,6 @@ Here's a list of resources (in no particular order) I found useful to complete t
 
 ## Acknowledgment
 
-Thanks to my peers at 42, Christophe Gerbaudo (@cgerbaud) and Giacomo Guiulfo (@gguiulfo) who helped me go faster on this project and gave me some great tips.
+Thanks to my peers at 42, Christophe Gerbaudo (@cgerbaud) and Giacomo Guiulfo (@gguiulfo) who helped me go faster on this project by giving me some great tips.
 
 Enjoy!
