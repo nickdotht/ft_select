@@ -19,7 +19,7 @@
 ** then loads the entry from the terminfo database for name, if it exists.
 ** I'm using STDERR_FILENO instead of STDOUT_FILENO to take care of command
 ** substitutions so that we don't use the same file descriptor as the calling
-** command. Using STDERR_FILENO would have been a problem too for some commands
+** command. Using STDIN_FILENO would have been a problem too for some commands
 ** i.e.: rm `./ft_ls test1 test2`
 **
 ** @param		tty_name 	entry name received from the environment variable
