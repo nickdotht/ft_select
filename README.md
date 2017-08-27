@@ -98,4 +98,8 @@ Here's a list of resources (in no particular order) I found useful to complete t
 
 Thanks to my peers at 42, Christophe Gerbaudo (@cgerbaud) and Giacomo Guiulfo (@gguiulfo) who helped me go faster on this project by giving me some great tips.
 
+# Sponsors
+
+<a href="https://app.codesponsor.io/link/Fo4iMpT8bBWXwb54Lj7DPwqL/R4meau/ft_select" rel="nofollow"><img src="https://app.codesponsor.io/embed/Fo4iMpT8bBWXwb54Lj7DPwqL/R4meau/ft_select.svg" style="width: 888px; height: 68px;" alt="Sponsor" /></a>
+
 Enjoy!
